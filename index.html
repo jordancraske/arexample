@@ -7,18 +7,15 @@
         <script src="https://raw.githack.com/AR-js-org/studio-backend/master/src/modules/marker/tools/gesture-detector.js"></script>
         <script src="https://raw.githack.com/AR-js-org/studio-backend/master/src/modules/marker/tools/gesture-handler.js"></script>
         <script 
-            let interactionCount = 0; // Declare variable for interaction count
-
+            let interactionCount = 0;
 AFrame.registerComponent('gesture-handler', {
   init: function() {
     const markerEntity = this.el.parentElement;  // Get the parent marker entity
-    markerEntity.addEventListener('click', () => {
+    markerEntity.addEventListener('markerfound', () => {
       interactionCount++;
       const tallyElement = document.getElementById('interactionTally');
       tallyElement.textContent = interactionCount;  // Update tally text
-    });
-  }
-});</script>
+    });</script>
     </head>
 
     <body style="margin: 0; overflow: hidden;">
