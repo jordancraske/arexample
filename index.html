@@ -7,6 +7,28 @@
     <script src="https://unpkg.com/aframe-look-at-component@0.8.0/dist/aframe-look-at-component.min.js"></script>
     <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script>
     <script src="https://raw.githack.com/donmccurdy/aframe-extras/master/dist/aframe-extras.loaders.min.js"></script>
+
+    <script>
+  const outerEntity = document.querySelector('a-entity[click-listener]');
+
+  outerEntity.addEventListener('click', function(evt) {
+    const objectEntity = this.querySelector('a-entity');  // Get the inner entity
+
+    // Choose between geolocation or manual placement based on a flag or user preference
+    if (useGeolocation) {
+      // Keep the object at the geolocation (no change)
+    } else {
+      // Get the intersection point where the user clicked
+      const intersection = evt.detail.intersection;
+      if (intersection) {
+        const worldPosition = intersection.point;
+        
+        // Update the object's position to the clicked location
+        objectEntity.setAttribute('position', worldPosition);
+      }
+    }
+  });
+</script>
   </head>
 
   <body style="margin: 0; overflow: hidden;">
@@ -23,13 +45,14 @@
         ></a-asset-item>
       </a-assets>
 
-        <a-entity
-          look-at="[gps-camera]"
-          animation-mixer="loop: repeat"
-          gltf-model="#animated-asset"
-          scale="10, 10, 10"
-          gps-entity-place="latitude: 52.96814; longitude: -1.15317;"
-        ></a-entity>
+        <a-entity click-listener>  <a-entity
+            look-at="[gps-camera]"
+            animation-mixer="loop: repeat"
+            gltf-model="#animated-asset"
+            scale="10, 10, 10"
+            gps-entity-place="latitude: 52.96814; longitude: -1.15317;"
+          ></a-entity>
+        </a-entity>
 
       <a-camera gps-camera rotation-reader></a-camera>
     </a-scene>
