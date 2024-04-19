@@ -17,12 +17,6 @@
       arjs="sourceType: webcam; debugUIEnabled: false;"
     >
       <a-assets>
-          <a-asset-item id="arrow-model" src="arrow.glb"></a-asset-item>
-      </a-assets>
-      
-      <a-entity id="direction-arrow" look-at="[gps-camera]" gltf-model="#arrow-model" scale="0.5 0.5 0.5" position="0 0 -2"></a-entity>
-
-      <a-assets>
         <a-asset-item
           id="animated-asset"
           src="asset.glb"
@@ -33,7 +27,7 @@
           look-at="[gps-camera]"
           animation-mixer="loop: repeat"
           gltf-model="#animated-asset"
-          scale="3.7360790846432104 3.7360790846432104 3.7360790846432104"
+          scale="10, 10, 10"
           gps-entity-place="latitude: 52.968296361050385; longitude: -1.1530702392393044;"
         ></a-entity>
 
