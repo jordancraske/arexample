@@ -6,6 +6,19 @@
         <script src="https://raw.githack.com/donmccurdy/aframe-extras/master/dist/aframe-extras.loaders.min.js"></script>
         <script src="https://raw.githack.com/AR-js-org/studio-backend/master/src/modules/marker/tools/gesture-detector.js"></script>
         <script src="https://raw.githack.com/AR-js-org/studio-backend/master/src/modules/marker/tools/gesture-handler.js"></script>
+        <script 
+            let interactionCount = 0; // Declare variable for interaction count
+
+AFrame.registerComponent('gesture-handler', {
+  init: function() {
+    const markerEntity = this.el.parentElement;  // Get the parent marker entity
+    markerEntity.addEventListener('click', () => {
+      interactionCount++;
+      const tallyElement = document.getElementById('interactionTally');
+      tallyElement.textContent = interactionCount;  // Update tally text
+    });
+  }
+});</script>
     </head>
 
     <body style="margin: 0; overflow: hidden;">
@@ -46,6 +59,7 @@
             </a-marker>
 
             <a-entity camera></a-entity>
+            <a-entity id="interactionTally" position="0 1.5 -2" text="color: white; font-size: 2em; align: center; baseline: center;"></a-entity>
         </a-scene>
     </body>
 </html>
