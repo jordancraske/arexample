@@ -1,53 +1,164 @@
-<!doctype html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
-    <head>
-        <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
-        <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
-        <script src="https://raw.githack.com/donmccurdy/aframe-extras/master/dist/aframe-extras.loaders.min.js"></script>
-        <script src="https://raw.githack.com/AR-js-org/studio-backend/master/src/modules/marker/tools/gesture-detector.js"></script>
-        <script src="https://raw.githack.com/AR-js-org/studio-backend/master/src/modules/marker/tools/gesture-handler.js"></script>
-    </head>
+<head>
+  <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"> 
+  <title>Hello, world!</title>
+  <!-- include three.js library -->
+  <script src='../../js/three.js'></script> 
+  <script src='../../js/OBJLoader.js'></script> 
+  <script src='../../js/MTLLoader.js'></script> 
+  <!-- include jsartookit -->
+  <script src="../../jsartoolkit5/artoolkit.min.js"></script> 
+  <script src="../../jsartoolkit5/artoolkit.api.js"></script> 
+  <!-- include threex.artoolkit -->
+  <script src="../../threex/threex-artoolkitsource.js"></script> 
+  <script src="../../threex/threex-artoolkitcontext.js"></script> 
+  <script src="../../threex/threex-arbasecontrols.js"></script> 
+  <script src="../../threex/threex-armarkercontrols.js"></script>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="2299.7">
+  <style type="text/css">
+  </style>
+</head>
+<body>
+  <script>
+    var scene, camera, renderer, clock, deltaTime, totalTime; 
+    var arToolkitSource, arToolkitContext;
+    var markerRoot1;
+    var mesh0, mesh1;
 
-    <body style="margin: 0; overflow: hidden;">
-        <a-scene
-            vr-mode-ui="enabled: false;"
-            loading-screen="enabled: false;"
-            renderer="logarithmicDepthBuffer: true;"
-            arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;"
-            id="scene"
-            style="position: absolute; top: 10px; left: 10px; width: 30%; height: 30%;"
-        >
-            <a-assets>
-                <a-asset-item
-                    id="animated-asset"
-                    src="asset.glb"
-                ></a-asset-item>
-            </a-assets>
+    initialize();
+    animate();
 
-            <a-marker
-                id="animated-marker"
-                type="pattern"
-                preset="custom"
-                url="marker.patt"
-                raycaster="objects: .clickable"
-                emitevents="true"
-                cursor="fuse: false; rayOrigin: mouse;"
-                id="markerA"
-            >
-                <a-entity
-                    id="bowser-model"
-                    scale="2.1700988558040133 2.1700988558040133 2.1700988558040133"
-                    animation-mixer="loop: repeat"
-                    gltf-model="#animated-asset"
-                    class="clickable"
-                    gesture-handler
-                ></a-entity>
-            </a-marker>
+    function animate()
+    {
+      requestAnimationFrame(animate); 
+      deltaTime = clock.getDelta(); 
+      totalTime += deltaTime; 
+      update();
+      render(); 
+    }
 
-            <a-entity camera></a-entity>
-            <a-entity id="interactionTally" position="0 1.5 -0.5" text="color: white; font-size: 2em; align: center; baseline: center; opacity: 1;"></a-entity>
-        </a-scene>
-    </body>
+    function update()
+    {
+      // update artoolkit on every frame
+      if ( arToolkitSource.ready !== false ) 
+      arToolkitContext.update( arToolkitSource.domElement );
+    }
+
+    function render()
+    {
+      renderer.render( scene, camera ); 
+    }
+
+    function initialize()
+    {
+      scene = new THREE.Scene();
+      let ambientLight = new THREE.AmbientLight( 0xcccccc, 1.0 ); 
+      scene.add( ambientLight );
+
+      camera = new THREE.Camera(); 
+      scene.add(camera);
+
+      renderer = new THREE.WebGLRenderer(
+        { 
+        antialias : true,
+        alpha: true
+        });
+
+      
+      renderer.setClearColor(new THREE.Color('lightgrey'), 0) 
+      renderer.setSize( 320, 240 ); 
+      renderer.domElement.style.position = 'absolute' 
+      renderer.domElement.style.top = '10px' 
+      renderer.domElement.style.left = '10px' 
+      document.body.appendChild( renderer.domElement );
+
+      clock = new THREE.Clock();
+      deltaTime = 0;
+      totalTime = 0;
+
+      arToolkitSource = new THREEx.ArToolkitSource(
+        { 
+        sourceType : 'webcam',
+        });
+    
+
+      function onResize()
+      {
+        arToolkitSource.onResize() 
+        arToolkitSource.copySizeTo(renderer.domElement) 
+        if ( arToolkitContext.arController !== null ) 
+        {
+          arToolkitSource.copySizeTo(arToolkitContext.arController.canvas) 
+        }
+      }
+        
+      arToolkitSource.init(function onReady()
+      { 
+        onResize()
+      });
+        // handle resize event
+        window.addEventListener('resize', function(){ onResize()
+        });
+
+      arToolkitContext = new THREEx.ArToolkitContext(
+        { cameraParametersUrl: '../../data/camera_para.dat', 
+        detectionMode: 'mono'
+        });
+
+      arToolkitContext.init( function onCompleted()
+        { camera.projectionMatrix.copy( arToolkitContext.getProjectionMatrix() ); 
+        });
+
+        markerRoot1 = new THREE.Group();
+        scene.add(markerRoot1);
+        let markerControls1 = new THREEx.ArMarkerControls(arToolkitContext, markerRoot1, 
+        {
+          type: 'pattern', patternUrl: "marker.patt",
+        })
+
+        let geometry1 = new THREE.PlaneBufferGeometry(1,1, 4,4);
+        let loader = new THREE.TextureLoader();
+        let texture = loader.load( 'grass.jpg', render ); 
+        let material1 = new THREE.MeshBasicMaterial( { map: texture } ); 
+        mesh1 = new THREE.Mesh( geometry1, material1 ); 
+        mesh1.rotation.x = -Math.PI/2;
+        markerRoot1.add( mesh1 );
+
+        new THREE.MTLLoader()
+          .load( 'puppy.mtl', function ( materials ) 
+          {
+            materials.preload();
+            new THREE.OBJLoader()
+              .setMaterials( materials )
+              .load( 'puppy.obj', function ( group ) 
+                {
+                  mesh0 = group.children[0]; 
+                  mesh0.material.side = THREE.DoubleSide; 
+                  mesh0.position.y = 0.025; 
+                  mesh0.scale.set(1.25,1.25,1.25); 
+                  mesh0.rotation.y = Math.PI / 2; 
+                  markerRoot1.add(mesh0);
+                }, onProgress, onError );
+          });
+
+          function onProgress(xhr) 
+          {
+            console.log( (xhr.loaded / xhr.total * 100) + '% loaded' );
+          }
+
+          function onError(xhr) 
+          {
+            console.log( 'An error happened' );
+          }
+      }
+
+  </script>
+</body>
 </html>
 
 
