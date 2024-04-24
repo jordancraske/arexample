@@ -8,10 +8,10 @@
         <script src="https://raw.githack.com/AR-js-org/studio-backend/master/src/modules/marker/tools/gesture-handler.js"></script>
         <script>
             let markerDetectedCount = 0; // Variable to store the score
-            function updateScore() {
+            function changeHeaderColor() {
                 const header = document.querySelector("header");
                 if (header) {
-                    header.style.backgroundColor = "red";
+                    header.style.background = "red";
                 } else {
                     console.error("Header element not found!");
                 }
@@ -47,6 +47,7 @@
     <div class="header">
       <h1> Quick, locate the markers hidden around the square... </h1>
         <p> SCORE: <span id="interactionTally">0</span> </p>
+        <button onclick="changeHeaderColor()">Change to Red</button>
     </div>
       
         <a-scene
