@@ -9,9 +9,12 @@
         <script>
             let markerDetectedCount = 0; // Variable to store the score
             function updateScore() {
-                markerDetectedCount++;
-                console.log("Marker detected! Score:", markerDetectedCount);
-                document.querySelector('#interactionTally').setAttribute('text', `SCORE: ${markerDetectedCount}`);
+                const header = document.querySelector("header");
+                if (header) {
+                    header.style.backgroundColor = "red";
+                } else {
+                    console.error("Header element not found!");
+                }
             }
         </script>
 
