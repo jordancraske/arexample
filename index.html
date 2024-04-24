@@ -9,8 +9,9 @@
         <script>
             let markerDetectedCount = 0; // Variable to store the score
             function updateScore() {
-              markerDetectedCount++;
-              document.querySelector('#interactionTally').setAttribute('text', `SCORE: ${markerDetectedCount}`);
+                markerDetectedCount++;
+                console.log("Marker detected! Score:", markerDetectedCount);
+                document.querySelector('#interactionTally').setAttribute('text', `SCORE: ${markerDetectedCount}`);
             }
         </script>
 
