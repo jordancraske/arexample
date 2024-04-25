@@ -7,18 +7,27 @@
         <script src="https://raw.githack.com/AR-js-org/studio-backend/master/src/modules/marker/tools/gesture-detector.js"></script>
         <script src="https://raw.githack.com/AR-js-org/studio-backend/master/src/modules/marker/tools/gesture-handler.js"></script>
         <script>
-            let markerDetectedCount = 0; // Variable to store the score
-            function changeHeaderColor() {
-                const header = document.querySelector("header");
-                if (header) {
-                    header.style.background = "red";
-                } else {
-                    console.error("Header element not found!");
-                }
-            }
-        </script>
+  AFrame.registerComponent('score-updater', {
+    init: function () {
+      this.score = 0; // Initialize score variable
 
-      
+      // Event listener for marker interaction (replace with your desired interaction event)
+      this.el.addEventListener('click', this.handleClick.bind(this));
+    },
+
+    handleClick: function () {
+      this.score++; // Increment score
+
+      // Update score display in the header
+      const headerScore = document.getElementById('interactionTally');
+      headerScore.textContent = `SCORE: ${this.score}`;
+
+      // Update score display in the scene entity
+      const sceneScore = document.querySelector('a-scene a-entity#interactionTally');
+      sceneScore.setAttribute('text', 'value', `SCORE: ${this.score}`);
+    }
+  });
+    </script>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <style>
             body {
@@ -37,7 +46,6 @@
         </style>
     
     
-    
     </head>
 
 
@@ -47,7 +55,6 @@
     <div class="header">
       <h1> Quick, locate the markers hidden around the square... </h1>
         <p> SCORE: <span id="interactionTally">0</span> </p>
-        <button onclick="changeHeaderColor()">Change to Red</button>
     </div>
       
         <a-scene
@@ -74,7 +81,7 @@
                 emitevents="true"
                 cursor="fuse: false; rayOrigin: mouse;"
                 id="markerA"
-                visible="updateScore()"
+                **component="score-updater"**
             >
                 <a-entity
                     id="bowser-model"
