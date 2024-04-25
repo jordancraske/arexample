@@ -7,6 +7,7 @@
         <script src="https://raw.githack.com/AR-js-org/studio-backend/master/src/modules/marker/tools/gesture-detector.js"></script>
         <script src="https://raw.githack.com/AR-js-org/studio-backend/master/src/modules/marker/tools/gesture-handler.js"></script>
         <script>
+    document.addEventListener('DOMContentLoaded', function() {
   AFrame.registerComponent('score-updater', {
     init: function () {
       this.score = 0; // Initialize score variable
@@ -26,7 +27,8 @@
       const sceneScore = document.querySelector('a-scene a-entity#interactionTally');
       sceneScore.setAttribute('text', 'value', `SCORE: ${this.score}`);
     }
-  });
+  })
+    };
     </script>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <style>
